@@ -1,5 +1,3 @@
-using System;
-
 namespace WordsTeacher.Models
 {
     public class ErrorViewModel
