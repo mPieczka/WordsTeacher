@@ -1,0 +1,69 @@
+﻿@model WordsTeacher.Data.Entities.Phrase
+
+@{
+    ViewData["Title"] = "Edit";
+}
+
+<h1>Edit</h1>
+
+<h4>Phrase</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Edit">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="BasePharse" class="control-label"></label>
+                <input asp-for="BasePharse" class="form-control" />
+                <span asp-validation-for="BasePharse" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="TranslatedPharse" class="control-label"></label>
+                <input asp-for="TranslatedPharse" class="form-control" />
+                <span asp-validation-for="TranslatedPharse" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="TranslationPronunciation" class="control-label"></label>
+                <input asp-for="TranslationPronunciation" class="form-control" />
+                <span asp-validation-for="TranslationPronunciation" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="AudioPath" class="control-label"></label>
+                <input asp-for="AudioPath" class="form-control" />
+                <span asp-validation-for="AudioPath" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="ImagePath" class="control-label"></label>
+                <input asp-for="ImagePath" class="form-control" />
+                <span asp-validation-for="ImagePath" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="RemaiderTimeUtc" class="control-label"></label>
+                <input asp-for="RemaiderTimeUtc" class="form-control" />
+                <span asp-validation-for="RemaiderTimeUtc" class="text-danger"></span>
+            </div>
+            <input type="hidden" asp-for="Id" />
+            <div class="form-group">
+                <label asp-for="CreateDateUtc" class="control-label"></label>
+                <input asp-for="CreateDateUtc" class="form-control" />
+                <span asp-validation-for="CreateDateUtc" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="UpdateTimeUtc" class="control-label"></label>
+                <input asp-for="UpdateTimeUtc" class="form-control" />
+                <span asp-validation-for="UpdateTimeUtc" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Save" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}
