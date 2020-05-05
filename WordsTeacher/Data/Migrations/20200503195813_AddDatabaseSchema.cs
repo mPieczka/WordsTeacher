@@ -23,7 +23,7 @@ namespace WordsTeacher.Data.Migrations
                     table.PrimaryKey("PK_Languages", x => x.Id);
                 });
 
-            migrationBuilder.Sql("insert into Languages (GetDate(),GetDate(),'Polish','PL-pl'),(GetDate(),GetDate(),'English','En-us')");
+            migrationBuilder.Sql("insert into Languages values (GetDate(),GetDate(),'Polish','PL-pl'),(GetDate(),GetDate(),'English','En-us')");
 
             migrationBuilder.CreateTable(
                 name: "Phrases",

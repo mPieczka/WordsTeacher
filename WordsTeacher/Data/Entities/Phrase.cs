@@ -10,11 +10,12 @@ namespace WordsTeacher.Data.Entities
         public virtual Language PhareLanguage { get; set; }
         public virtual Language TranslationLanguage { get; set; }
         public string BasePharse { get; set; }
+        public string BasePhrasePronunciation { get; set; }
         public string TranslatedPharse { get; set; }
         public string TranslationPronunciation { get; set; }
         public string AudioPath { get; set; }
         public string ImagePath { get; set; }
-        public DateTime RemaiderTime { get; set; }
+        public DateTime RemaiderTimeUtc { get; set; }
         public virtual IdentityUser User { get; set; }
     }
 }

@@ -7,5 +7,6 @@ namespace WordsTeacher.Data.Entities
         public int Id { get; set; }
         public DateTime CreateDateUtc { get; set; }
         public DateTime UpdateTimeUtc { get; set; }
+        public DateTime? DeleteTimeUtc { get; set; }
     }
 }
