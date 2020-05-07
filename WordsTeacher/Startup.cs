@@ -1,3 +1,4 @@
+using AutoMapper;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Identity;
@@ -7,6 +8,8 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using System;
 using WordsTeacher.Data;
+using WordsTeacher.Factories;
+using WordsTeacher.Services;
 
 namespace WordsTeacher
 {
@@ -27,8 +30,14 @@ namespace WordsTeacher
                     Configuration.GetConnectionString("DefaultConnection")));
             services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
                 .AddEntityFrameworkStores<ApplicationDbContext>();
+            services.AddAutoMapper(typeof(Startup));
             services.AddControllersWithViews();
             services.AddRazorPages();
+
+            services.AddScoped<PhraseFactory>();
+            services.AddScoped<PhraseService>();
+            services.AddScoped<LanguageService>();
+            services.AddScoped(typeof(Repository<>));
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

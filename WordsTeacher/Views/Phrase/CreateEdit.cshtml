@@ -1,0 +1,53 @@
+﻿@model WordsTeacher.Models.Phrases.PhraseViewModel
+
+@{
+    ViewData["Title"] = "Create";
+}
+
+<h1>Create</h1>
+
+<h4>Phrase</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="@(Model.Id > 0 ? "Edit" : "Create")">
+            <input hidden asp-for="Id" />
+            <div class="form-group">
+                <label asp-for="BasePhrase" class="control-label"></label>
+                <input asp-for="BasePhrase" class="form-control" />
+                <span asp-validation-for="BasePhrase" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="PickedBaseLanguage" class="control-label"></label>
+                <select asp-for="PickedBaseLanguage" asp-items="Model.AvailableLanguages" class="form-control"></select>
+                <span asp-validation-for="PickedBaseLanguage" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="TranslatedPhrase" class="control-label"></label>
+                <input asp-for="TranslatedPhrase" class="form-control" />
+                <span asp-validation-for="TranslatedPhrase" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="PickedTranslationLanguage" class="control-label"></label>
+                <select asp-for="PickedTranslationLanguage" asp-items="Model.AvailableLanguages" class="form-control"></select>
+                <span asp-validation-for="PickedTranslationLanguage" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="TranslationPronunciation" class="control-label"></label>
+                <input asp-for="TranslationPronunciation" class="form-control" />
+                <span asp-validation-for="TranslationPronunciation" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Create" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

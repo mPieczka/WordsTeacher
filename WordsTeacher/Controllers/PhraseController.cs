@@ -7,147 +7,87 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using WordsTeacher.Data;
 using WordsTeacher.Data.Entities;
+using WordsTeacher.Factories;
+using WordsTeacher.Models.Phrases;
+using WordsTeacher.Services;
 
 namespace WordsTeacher.Controllers
 {
     public class PhraseController : Controller
     {
-        private readonly ApplicationDbContext _context;
+        private readonly PhraseService _phraseService;
+        private readonly PhraseFactory _phraseFactory;
 
-        public PhraseController(ApplicationDbContext context)
+        public PhraseController(PhraseService phraseService, PhraseFactory phraseFactory)
         {
-            _context = context;
+            _phraseService = phraseService;
+            _phraseFactory = phraseFactory;
         }
 
-        // GET: Phrases
-        public async Task<IActionResult> Index()
-        {
-            return View(await _context.Phrases.ToListAsync());
-        }
-
-        // GET: Phrases/Details/5
-        public async Task<IActionResult> Details(int? id)
-        {
-            if (id == null)
-            {
-                return NotFound();
-            }
-
-            var phrase = await _context.Phrases
-                .FirstOrDefaultAsync(m => m.Id == id);
-            if (phrase == null)
-            {
-                return NotFound();
-            }
-
-            return View(phrase);
-        }
-
-        // GET: Phrases/Create
-        public IActionResult Create()
+        public IActionResult Index()
         {
             return View();
         }
 
-        // POST: Phrases/Create
-        // To protect from overposting attacks, enable the specific properties you want to bind to, for
-        // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
+        public IActionResult GetPhrases()
+        {
+            return Ok(_phraseFactory.PrepareList());
+        }
+
+        public IActionResult Create()
+        {
+            return View("CreateEdit", _phraseFactory.PreparePhraseViewModel());
+        }
+
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("BasePharse,TranslatedPharse,TranslationPronunciation,AudioPath,ImagePath,RemaiderTime,Id,CreateDateUtc,UpdateTimeUtc")] Phrase phrase)
+        public IActionResult Create(PhraseViewModel model)
         {
             if (ModelState.IsValid)
             {
-                _context.Add(phrase);
-                await _context.SaveChangesAsync();
+                var phrase = _phraseFactory.PreparePhrase(model);
+                _phraseService.AddPhrase(phrase);
                 return RedirectToAction(nameof(Index));
             }
-            return View(phrase);
+            return View("CreateEdit", model);
         }
 
-        // GET: Phrases/Edit/5
-        public async Task<IActionResult> Edit(int? id)
+        public IActionResult Edit(int id)
         {
-            if (id == null)
-            {
-                return NotFound();
-            }
+            var phrase = _phraseService.GetPhraseById(id);
 
-            var phrase = await _context.Phrases.FindAsync(id);
             if (phrase == null)
             {
                 return NotFound();
             }
-            return View(phrase);
+            var model = _phraseFactory.PreparePhraseViewModel(phrase);
+            return View("CreateEdit", model);
         }
 
-        // POST: Phrases/Edit/5
-        // To protect from overposting attacks, enable the specific properties you want to bind to, for
-        // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("BasePharse,TranslatedPharse,TranslationPronunciation,AudioPath,ImagePath,RemaiderTime,Id,CreateDateUtc,UpdateTimeUtc")] Phrase phrase)
+        public IActionResult Edit(PhraseViewModel model)
         {
-            if (id != phrase.Id)
-            {
-                return NotFound();
-            }
-
             if (ModelState.IsValid)
             {
-                try
-                {
-                    _context.Update(phrase);
-                    await _context.SaveChangesAsync();
-                }
-                catch (DbUpdateConcurrencyException)
-                {
-                    if (!PhraseExists(phrase.Id))
-                    {
-                        return NotFound();
-                    }
-                    else
-                    {
-                        throw;
-                    }
-                }
+                var phrase = _phraseService.GetPhraseById(model.Id);
+                _phraseFactory.PreparePhrase(model, phrase);
+                _phraseService.UpdatePhrase(phrase);
                 return RedirectToAction(nameof(Index));
             }
-            return View(phrase);
+            return View(model);
         }
 
-        // GET: Phrases/Delete/5
-        public async Task<IActionResult> Delete(int? id)
+        public IActionResult Delete(int id)
         {
-            if (id == null)
-            {
-                return NotFound();
-            }
+            var phrase = _phraseService.GetPhraseById(id);
 
-            var phrase = await _context.Phrases
-                .FirstOrDefaultAsync(m => m.Id == id);
             if (phrase == null)
             {
                 return NotFound();
             }
-
-            return View(phrase);
-        }
-
-        // POST: Phrases/Delete/5
-        [HttpPost, ActionName("Delete")]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeleteConfirmed(int id)
-        {
-            var phrase = await _context.Phrases.FindAsync(id);
-            _context.Phrases.Remove(phrase);
-            await _context.SaveChangesAsync();
+            _phraseService.DeletePhrase(phrase);
             return RedirectToAction(nameof(Index));
-        }
-
-        private bool PhraseExists(int id)
-        {
-            return _context.Phrases.Any(e => e.Id == id);
         }
     }
 }

@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using WordsTeacher.Data;
 
 namespace WordsTeacher.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20200507164206_FixPhraseTypeo")]
+    partial class FixPhraseTypeo
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -271,7 +273,7 @@ namespace WordsTeacher.Data.Migrations
                     b.Property<string>("ImagePath")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int?>("PhraseLanguageId")
+                    b.Property<int?>("PhareLanguageId")
                         .HasColumnType("int");
 
                     b.Property<DateTime>("RemaiderTimeUtc")
@@ -294,7 +296,7 @@ namespace WordsTeacher.Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("PhraseLanguageId");
+                    b.HasIndex("PhareLanguageId");
 
                     b.HasIndex("TranslationLanguageId");
 
@@ -405,9 +407,9 @@ namespace WordsTeacher.Data.Migrations
 
             modelBuilder.Entity("WordsTeacher.Data.Entities.Phrase", b =>
                 {
-                    b.HasOne("WordsTeacher.Data.Entities.Language", "PhraseLanguage")
+                    b.HasOne("WordsTeacher.Data.Entities.Language", "PhareLanguage")
                         .WithMany()
-                        .HasForeignKey("PhraseLanguageId");
+                        .HasForeignKey("PhareLanguageId");
 
                     b.HasOne("WordsTeacher.Data.Entities.Language", "TranslationLanguage")
                         .WithMany()
