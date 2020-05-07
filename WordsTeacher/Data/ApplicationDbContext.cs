@@ -15,6 +15,12 @@ namespace WordsTeacher.Data
         {
         }
 
+        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+        {
+            optionsBuilder.UseLazyLoadingProxies();
+            base.OnConfiguring(optionsBuilder);
+        }
+
         protected override void OnModelCreating(ModelBuilder builder)
         {
             builder.Entity<PhraseTestMapping>().HasKey(a => new { a.TestId, a.PhraseId });
