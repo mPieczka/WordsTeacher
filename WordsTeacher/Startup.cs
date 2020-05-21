@@ -33,9 +33,15 @@ namespace WordsTeacher
             services.AddAutoMapper(typeof(Startup));
             services.AddControllersWithViews();
             services.AddRazorPages();
+            services.Configure<IISOptions>(options =>
+            {
+                options.ForwardClientCertificate = false;
+            });
 
             services.AddScoped<PhraseFactory>();
+            services.AddScoped<TestFactory>();
             services.AddScoped<PhraseService>();
+            services.AddScoped<TestService>();
             services.AddScoped<LanguageService>();
             services.AddScoped(typeof(Repository<>));
         }

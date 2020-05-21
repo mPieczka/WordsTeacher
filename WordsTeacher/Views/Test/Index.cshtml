@@ -1,0 +1,52 @@
+﻿@model WordsTeacher.Models.Tests.TestListModel
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h1>Index</h1>
+<script src="~/lib/jquery-datatable/jquery.dataTables.min.js"></script>
+<script src="~/lib/handlebars/handlebars.js"></script>
+<link href="~/lib/jquery-datatable/jquery.dataTables.min.css" rel="stylesheet" />
+
+<p>
+    <a asp-action="Create">Create New</a>
+</p>
+
+<table id="pharse-table" class="display" style="width:100%">
+    <thead>
+        <tr>
+            <th>@Html.LabelFor(a => a.BaseLanguageName)</th>
+            <th>@Html.LabelFor(a => a.TranslationLanguageName)</th>
+            <th>@Html.LabelFor(a => a.CorrectAnswers)</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+</table>
+<script id="actions-template" type="text/x-handlebars-template">
+    <a class="btn btn-success" href="@Url.Action("Edit","Phrase")/{{model}}">Edit</a>
+    <a class="btn btn-danger" href="@Url.Action("Delete","Phrase")/{{model}}">Delete</a>
+</script>
+<script>
+    $(() => {
+        $('#pharse-table').DataTable({
+            "processing": true,
+            "serverSide": true,
+            "ajax": {
+                url: "@Url.Action("GetTests", "Test")",
+                type:"POST"
+            },
+            "columns": [
+                { "data": "baseLanguageName" },
+                { "data": "translationLanguageName" },
+                { "data": "correctAnswers" },
+                {
+                    "data": "id",
+                    "render": function (data, type, row, meta) {
+                        var template = Handlebars.compile($("#actions-template").html());
+                        return template({ model: data, });
+                }}
+            ]
+        });
+    })
+</script>
