@@ -26,13 +26,15 @@ namespace WordsTeacher
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddDbContext<ApplicationDbContext>(options =>
-                options.UseSqlServer(
+                options.UseLazyLoadingProxies().UseSqlServer(
                     Configuration.GetConnectionString("DefaultConnection")));
             services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
                 .AddEntityFrameworkStores<ApplicationDbContext>();
             services.AddAutoMapper(typeof(Startup));
             services.AddControllersWithViews();
-            services.AddRazorPages();
+            services.AddRazorPages()
+                .AddRazorRuntimeCompilation();
+
             services.Configure<IISOptions>(options =>
             {
                 options.ForwardClientCertificate = false;
