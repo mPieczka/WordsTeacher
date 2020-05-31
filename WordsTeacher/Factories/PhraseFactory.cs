@@ -102,7 +102,7 @@ namespace WordsTeacher.Factories
 
         public Phrase PreparePhrase(PhraseViewModel model)
         {
-            return _mapper.Map<Phrase>(model);
+            return PreparePhrase(model, new Phrase());
         }
 
         public Phrase PreparePhrase(PhraseViewModel model, Phrase phrase)
@@ -110,6 +110,7 @@ namespace WordsTeacher.Factories
             _mapper.Map(model, phrase);
             phrase.PhraseLanguage = _languageService.GetLanguageById(model.PickedBaseLanguage);
             phrase.TranslationLanguage = _languageService.GetLanguageById(model.PickedTranslationLanguage);
+            phrase.RemaiderTimeUtc = DateTime.UtcNow.AddDays(_firstCatalogDaysRemainder);
             return phrase;
         }
 
