@@ -25,7 +25,7 @@ namespace WordsTeacher.Services
             var query = _phraseRepository.Table;
 
             if (toRemaind.HasValue && toRemaind.Value)
-                query.Where(a => a.RemaiderTimeUtc >= DateTime.UtcNow);
+                query = query.Where(a => a.RemaiderTimeUtc <= DateTime.UtcNow);
 
             query = query.OrderByDescending(a => a.Id);
 
