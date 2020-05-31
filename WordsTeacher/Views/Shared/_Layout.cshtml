@@ -38,7 +38,7 @@
                                 <a class="nav-link text-dark" asp-area="" asp-controller="Test" asp-action="Index">Test</a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link text-dark" asp-area="" asp-controller="Learning" asp-action="Index">Learning</a>
+                                <a id="learning-menu-item" class="nav-link" asp-area="" asp-controller="Learning" asp-action="Index">Learning</a>
                             </li>
                         </ul>
                     </div>
@@ -57,5 +57,19 @@
             &copy; 2020 - WordsTeacher - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
         </div>
     </footer>
+    <script>
+        $(() => {
+            $.ajax({
+                url: "@Url.Action("CheckIfAble", "Learning")",
+                success: (response) => {
+                    console.log(response === false);
+                    if (response)
+                        $("#learning-menu-item").addClass("text-dark");
+                    else
+                        $("#learning-menu-item").addClass("disabled");
+                }
+            })
+        })
+    </script>
 </body>
 </html>

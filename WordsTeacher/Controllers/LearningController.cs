@@ -21,5 +21,10 @@ namespace WordsTeacher.Controllers
         {
             return View(_phraseService.GetPhrases(toRemaind: true).Select(a => a.Id).ToList().Shuffle());
         }
+
+        public IActionResult CheckIfAble()
+        {
+            return Ok(_phraseService.GetPhrases(toRemaind: true).Select(a => a.Id).Any());
+        }
     }
 }
