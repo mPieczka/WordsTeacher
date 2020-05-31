@@ -2,10 +2,18 @@
 <div class="d-flex" style="height: 80vh">
     <div class="card index-card" style="margin: auto; width: 400px;height: 200px;">
         <div class="card-header center">
-            <i id="index-card-switch-sides" class="fas fa-sync float-left"></i>
-            <i class="fas fa-check"></i>
-            <i class="fas fa-times"></i>
-            <i id="index-card-next" class="fas fa-arrow-right float-right"></i>
+            <span id="index-card-switch-sides">
+                <i class="fas fa-sync float-left"></i>
+            </span>
+            <span id="index-card-correct">
+                <i class="fas fa-check"></i>
+            </span>
+            <span id="index-card-incorrect">
+                <i class="fas fa-times"></i>
+            </span>
+            <span id="index-card-next">
+                <i class="fas fa-arrow-right float-right"></i>
+            </span>
         </div>
         <div class="card-body index-card-front active">
             <div class="center">
@@ -39,15 +47,23 @@
 </script>
 
 <script>
-    let index = 0;
+    let index = -1;
     let phraseIds = [@string.Join(", ",Model)];
-    let currentPhraseId = phraseIds !== [] ? phraseIds[index] : 0;
+    let currentPhraseId;
 
     $(() => {
         GetNextPhrase();
 
         $("#index-card-switch-sides").click((e) => {
             $(".index-card .card-body").toggleClass("active");
+        });
+
+        $("#index-card-correct").click((e) => {
+            SetPhraseState(true);
+        });
+
+        $("#index-card-incorrect").click((e) => {
+            SetPhraseState(false);
         });
 
         $("#index-card-next").click((e) => {
@@ -57,36 +73,30 @@
 
     function GetNextPhrase() {
         SetNextPhrase();
-
-        $.ajax({
-            url: "@Url.Action("Details","Phrase")",
-            method: "POST",
-            data: { id: currentPhraseId },
-            success: (response) => {
-                $(".index-card .index-card-front").html(
-                    (Handlebars.compile($("#index-card-front-template").html()))(response)
-                );
-                $(".index-card .index-card-back").html(
-                    (Handlebars.compile($("#index-card-back-template").html()))(response)
-                );
-            }
-        })
+        if(currentPhraseId)
+            $.ajax({
+                url: "@Url.Action("Details","Phrase")",
+                method: "POST",
+                data: { id: currentPhraseId },
+                success: (response) => {
+                    $(".index-card .index-card-front").html(
+                        (Handlebars.compile($("#index-card-front-template").html()))(response)
+                    );
+                    $(".index-card .index-card-back").html(
+                        (Handlebars.compile($("#index-card-back-template").html()))(response)
+                    );
+                }
+            })
     }
 
-    function SetAsCorrectPhrase(correct) {
+    function SetPhraseState(correct) {
         $.ajax({
-            url: "@Url.Action("Details","Phrase")",
+            url: "@Url.Action("SetPhraseLearningState", "Phrase")",
             method: "POST",
-            data: { id: currentPhraseId },
+            data: { id: currentPhraseId, correct},
             success: (response) => {
-                $(".index-card .index-card-front").html(
-                    (Handlebars.compile($("#index-card-front-template").html()))(response)
-                );
-                $(".index-card .index-card-back").html(
-                    (Handlebars.compile($("#index-card-back-template").html()))(response)
-                );
-
-                SetNextPhrase();
+                phraseIds = phraseIds.filter((value) => value != currentPhraseId);
+                GetNextPhrase();
             }
         })
     }
