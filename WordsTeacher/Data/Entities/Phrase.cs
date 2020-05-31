@@ -15,7 +15,7 @@ namespace WordsTeacher.Data.Entities
         public string TranslationPronunciation { get; set; }
         public string AudioPath { get; set; }
         public string ImagePath { get; set; }
-        public DateTime RemaiderTimeUtc { get; set; }
+        public DateTime? RemaiderTimeUtc { get; set; }
         public virtual IdentityUser User { get; set; }
     }
 }

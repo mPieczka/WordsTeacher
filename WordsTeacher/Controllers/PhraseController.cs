@@ -1,13 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Authorization;
+﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Rendering;
-using Microsoft.EntityFrameworkCore;
-using WordsTeacher.Data;
-using WordsTeacher.Data.Entities;
 using WordsTeacher.Factories;
 using WordsTeacher.Models.Phrases;
 using WordsTeacher.Services;
@@ -90,6 +82,32 @@ namespace WordsTeacher.Controllers
             }
             _phraseService.DeletePhrase(phrase);
             return RedirectToAction(nameof(Index));
+        }
+
+        public IActionResult Details(int id)
+        {
+            var phrase = _phraseService.GetPhraseById(id);
+
+            if (phrase == null)
+            {
+                return NotFound();
+            }
+
+            return Ok(_phraseFactory.PreparePhraseViewModel(phrase));
+        }
+
+        public IActionResult SetPhraseLearningState(int id, bool correct)
+        {
+            var phrase = _phraseService.GetPhraseById(id);
+
+            if (phrase == null)
+            {
+                return NotFound();
+            }
+            _phraseFactory.SetLearningState(phrase, correct);
+            _phraseService.UpdatePhrase(phrase);
+
+            return Ok(new { Success = true });
         }
     }
 }

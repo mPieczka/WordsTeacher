@@ -7,11 +7,15 @@
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link href="~/lib/bootstrap/dist/css/bootstrap-multiselect.css" rel="stylesheet" />
     <link rel="stylesheet" href="~/css/site.css" />
+    <link href="~/lib/node_modules/@@fortawesome/fontawesome-free/css/all.min.css" rel="stylesheet" />
     <script src="~/lib/popperjs/popper.min.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap-multiselect.js"></script>
+    <script src="~/lib/node_modules/@@fortawesome/fontawesome-free/js/all.js"></script>
+    @RenderSection("scripts", false)
 </head>
 <body>
     <header>
@@ -33,6 +37,9 @@
                             <li class="nav-item">
                                 <a class="nav-link text-dark" asp-area="" asp-controller="Test" asp-action="Index">Test</a>
                             </li>
+                            <li class="nav-item">
+                                <a class="nav-link text-dark" asp-area="" asp-controller="Learning" asp-action="Index">Learning</a>
+                            </li>
                         </ul>
                     </div>
                 }
@@ -50,7 +57,5 @@
             &copy; 2020 - WordsTeacher - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
         </div>
     </footer>
-    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
-    @RenderSection("Scripts", required: false)
 </body>
 </html>

@@ -7,10 +7,25 @@
 
   <ItemGroup>
     <Compile Remove="wwwroot\lib\node_modules\%40popperjs\**" />
+    <Compile Remove="wwwroot\lib\node_modules\commander\**" />
+    <Compile Remove="wwwroot\lib\node_modules\handlebars\**" />
+    <Compile Remove="wwwroot\lib\node_modules\source-map\**" />
     <Content Remove="wwwroot\lib\node_modules\%40popperjs\**" />
+    <Content Remove="wwwroot\lib\node_modules\commander\**" />
+    <Content Remove="wwwroot\lib\node_modules\handlebars\**" />
+    <Content Remove="wwwroot\lib\node_modules\source-map\**" />
     <EmbeddedResource Remove="wwwroot\lib\node_modules\%40popperjs\**" />
+    <EmbeddedResource Remove="wwwroot\lib\node_modules\commander\**" />
+    <EmbeddedResource Remove="wwwroot\lib\node_modules\handlebars\**" />
+    <EmbeddedResource Remove="wwwroot\lib\node_modules\source-map\**" />
     <None Remove="wwwroot\lib\node_modules\%40popperjs\**" />
+    <None Remove="wwwroot\lib\node_modules\commander\**" />
+    <None Remove="wwwroot\lib\node_modules\handlebars\**" />
+    <None Remove="wwwroot\lib\node_modules\source-map\**" />
     <TypeScriptCompile Remove="wwwroot\lib\node_modules\%40popperjs\**" />
+    <TypeScriptCompile Remove="wwwroot\lib\node_modules\commander\**" />
+    <TypeScriptCompile Remove="wwwroot\lib\node_modules\handlebars\**" />
+    <TypeScriptCompile Remove="wwwroot\lib\node_modules\source-map\**" />
   </ItemGroup>
 
   <ItemGroup>
@@ -35,6 +50,7 @@
     <PackageReference Include="Microsoft.AspNetCore.Diagnostics.EntityFrameworkCore" Version="3.1.3" />
     <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="3.1.3" />
     <PackageReference Include="Microsoft.AspNetCore.Identity.UI" Version="3.1.3" />
+    <PackageReference Include="Microsoft.AspNetCore.Mvc.Razor.RuntimeCompilation" Version="3.1.4" Condition="'$(Configuration)' == 'Debug'" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Proxies" Version="3.1.3" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="3.1.2" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="3.1.3" />

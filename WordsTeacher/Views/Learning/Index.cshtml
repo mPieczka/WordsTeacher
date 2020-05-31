@@ -1,0 +1,104 @@
+﻿@model List<int>
+<div class="d-flex" style="height: 80vh">
+    <div class="card index-card" style="margin: auto; width: 400px;height: 200px;">
+        <div class="card-header center">
+            <i id="index-card-switch-sides" class="fas fa-sync float-left"></i>
+            <i class="fas fa-check"></i>
+            <i class="fas fa-times"></i>
+            <i id="index-card-next" class="fas fa-arrow-right float-right"></i>
+        </div>
+        <div class="card-body index-card-front active">
+            <div class="center">
+            </div>
+        </div>
+        <div class="card-body index-card-back">
+            <div class="center">
+            </div>
+        </div>
+    </div>
+</div>
+<script id="index-card-front-template" type="text/x-handlebars-template">
+    <div class="center">
+        <p>
+            <h2>{{basePhrase}}</h2>
+        </p>
+        {{#if basePhrasePronunciation}}
+        <p>[{{basePhrasePronunciation}}]</p>
+        {{/if}}
+    </div>
+</script>
+<script id="index-card-back-template" type="text/x-handlebars-template">
+    <div class="center">
+        <p>
+            <h2>{{translatedPhrase}}</h2>
+        </p>
+        {{#if translationPronunciation}}
+        <p>[{{translationPronunciation}}]</p>
+        {{/if}}
+    </div>
+</script>
+
+<script>
+    let index = 0;
+    let phraseIds = [@string.Join(", ",Model)];
+    let currentPhraseId = phraseIds !== [] ? phraseIds[index] : 0;
+
+    $(() => {
+        GetNextPhrase();
+
+        $("#index-card-switch-sides").click((e) => {
+            $(".index-card .card-body").toggleClass("active");
+        });
+
+        $("#index-card-next").click((e) => {
+            GetNextPhrase();
+        })
+    })
+
+    function GetNextPhrase() {
+        SetNextPhrase();
+
+        $.ajax({
+            url: "@Url.Action("Details","Phrase")",
+            method: "POST",
+            data: { id: currentPhraseId },
+            success: (response) => {
+                $(".index-card .index-card-front").html(
+                    (Handlebars.compile($("#index-card-front-template").html()))(response)
+                );
+                $(".index-card .index-card-back").html(
+                    (Handlebars.compile($("#index-card-back-template").html()))(response)
+                );
+            }
+        })
+    }
+
+    function SetAsCorrectPhrase(correct) {
+        $.ajax({
+            url: "@Url.Action("Details","Phrase")",
+            method: "POST",
+            data: { id: currentPhraseId },
+            success: (response) => {
+                $(".index-card .index-card-front").html(
+                    (Handlebars.compile($("#index-card-front-template").html()))(response)
+                );
+                $(".index-card .index-card-back").html(
+                    (Handlebars.compile($("#index-card-back-template").html()))(response)
+                );
+
+                SetNextPhrase();
+            }
+        })
+    }
+
+    function SetNextPhrase() {
+        index++;
+        if (index == phraseIds.length)
+            index = 0;
+        currentPhraseId = phraseIds[index];
+    }
+</script>
+
+@section scripts{
+    <script src="~/lib/node_modules/handlebars/dist/handlebars.min.js"></script>
+}
