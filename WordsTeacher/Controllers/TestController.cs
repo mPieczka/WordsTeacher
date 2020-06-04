@@ -19,11 +19,16 @@ namespace WordsTeacher.Controllers
     {
         private readonly TestFactory _testFactory;
         private readonly TestService _testService;
+        private readonly PhraseService _phraseService;
+        private readonly PhraseFactory _phraseFactory;
 
-        public TestController(TestFactory testFactory, TestService testService)
+        public TestController(TestFactory testFactory, TestService testService,
+            PhraseService phraseService, PhraseFactory phraseFactory)
         {
             _testFactory = testFactory;
             _testService = testService;
+            _phraseService = phraseService;
+            _phraseFactory = phraseFactory;
         }
 
         public IActionResult Index()
@@ -85,6 +90,35 @@ namespace WordsTeacher.Controllers
         public IActionResult Delete(int id)
         {
             return Ok();
+        }
+
+        public IActionResult Test(int id)
+        {
+            var test = _testService.GetById(id);
+            if (test == null)
+                return RedirectToAction(nameof(Index));
+
+            return View(new TestCompleteViewModel
+            {
+                Id = id,
+                Phrases = test.Phrases.Select(a => _phraseFactory.PreparePhraseViewModel(a.Phrase)).ToList()
+            });
+        }
+
+        public IActionResult CompleteTest(TestCompleteViewModel model)
+        {
+            var test = _testService.GetById(model.Id);
+            if (test == null)
+                return RedirectToAction(nameof(Test), new { model.Id });
+
+            test.CorrectAnswers = test.Phrases.Count(a =>
+                model.Phrases.First(b => b.Id == a.PhraseId).TranslatedPhrase.Equals(
+                (test.TranslationLanguage.Id == a.Phrase.PhraseLanguage.Id ?
+                a.Phrase.BasePhrase : a.Phrase.TranslatedPhrase), StringComparison.InvariantCultureIgnoreCase));
+
+            _testService.Update(test);
+
+            return RedirectToAction(nameof(Index));
         }
     }
 }

@@ -1,0 +1,46 @@
+﻿@model WordsTeacher.Models.Tests.TestCompleteViewModel
+@{
+    var index = 0;
+}
+<form asp-action="CompleteTest">
+    @Html.HiddenFor(a => a.Id)
+    <div class="row">
+        <div class="col-lg-04">
+            @foreach (var item in Model.Phrases.Take((int)Math.Ceiling(Model.Phrases.Count / 3.0d)))
+            {
+                <div class="form-group row">
+                    <label for="inputPassword" class="col-sm-2 col-form-label">@item.BasePhrase</label>
+                    <div class="col-sm-8 offset-sm-2">
+                        <input name="Phrases[@(index)].TranslatedPhrase" class="form-control" autocomplete="off">
+                        <input name="Phrases[@(index++)].Id" value="@item.Id" hidden>
+                    </div>
+                </div>
+            }
+        </div>
+        <div class="col-lg-04">
+            @foreach (var item in Model.Phrases.Skip((int)Math.Ceiling(Model.Phrases.Count / 3.0d)).Take((int)Math.Ceiling(Model.Phrases.Count / 3.0d)))
+            {
+                <div class="form-group row">
+                    <label for="inputPassword" class="col-sm-2 col-form-label">@item.BasePhrase</label>
+                    <div class="col-sm-8 offset-sm-2">
+                        <input name="Phrases[@(index)].TranslatedPhrase" class="form-control" autocomplete="off">
+                        <input name="Phrases[@(index++)].Id" value="@item.Id" hidden>
+                    </div>
+                </div>
+            }
+        </div>
+        <div class="col-lg-04">
+            @foreach (var item in Model.Phrases.Skip((int)Math.Ceiling((Model.Phrases.Count * 2) / 3.0d)))
+            {
+                <div class="form-group row">
+                    <label for="inputPassword" class="col-sm-2 col-form-label">@item.BasePhrase</label>
+                    <div class="col-sm-8 offset-sm-2">
+                        <input name="Phrases[@(index)].TranslatedPhrase" class="form-control" autocomplete="off">
+                        <input name="Phrases[@(index++)].Id" value="@item.Id" hidden>
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
+    <input type="submit" value="Submit" />
+</form>
