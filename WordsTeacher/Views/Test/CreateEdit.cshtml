@@ -1,16 +1,14 @@
 ﻿@model WordsTeacher.Models.Tests.TestViewModel
 
 @{
-    ViewData["Title"] = "Create";
+    ViewData["Title"] = Model.Id > 0 ? "Edit" : "Create";
 }
 
-<h1>Create</h1>
-
-<h4>Test</h4>
+<h2>Test</h2>
 <hr />
 <div class="row">
     <div class="col-md-4">
-        <form asp-action="Create">
+        <form asp-action="@(Model.Id > 0 ? "Edit" : "Create")">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <input hidden asp-for="Id" />
             <div class="form-group">
@@ -31,7 +29,7 @@
                         <optgroup label="@pharseGroup.Key.Name">
                             @foreach (var phrase in pharseGroup)
                             {
-                                <option value="@phrase.Value" disabled="@(phrase.Disabled ? "disable": null)">
+                                <option value="@phrase.Value" disabled="@(phrase.Disabled ? "disable": null)" selected="@(phrase.Selected ? "selected": null)">
                                     @phrase.Text
                                 </option>
                             }

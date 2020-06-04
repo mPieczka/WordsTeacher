@@ -43,7 +43,7 @@ namespace WordsTeacher.Factories
 
         public TestViewModel PrepareTestViewModel(Test test)
         {
-            return PrepareTestViewModelWithDefaults(_mapper.Map<TestViewModel>(test));
+            return PrepareTestViewModelWithDefaults(_mapper.Map<TestViewModel>(test), test);
         }
 
         public TestViewModel PrepareTestViewModel()
@@ -72,17 +72,19 @@ namespace WordsTeacher.Factories
             return test;
         }
 
-        private TestViewModel PrepareTestViewModelWithDefaults(TestViewModel model)
+        private TestViewModel PrepareTestViewModelWithDefaults(TestViewModel model, Test test = null)
         {
             var languages = _languageService.GetLanguages();
             model.PickedBaseLanguage = languages.First(a => a.FullName == "English").Id;
             model.PickedTranslationLanguage = languages.First(a => a.FullName == "Polish").Id;
-            PreapareAvailableProperties(model, languages);
+            PreapareAvailableProperties(model, languages, test?.Phrases.Select(a => a.PhraseId).ToList());
             return model;
         }
 
-        public TestViewModel PreapareAvailableProperties(TestViewModel model, List<Language> languages = null)
+        public TestViewModel PreapareAvailableProperties(TestViewModel model, List<Language> languages = null, List<int> selectedPhrases = null)
         {
+            if (selectedPhrases == null)
+                selectedPhrases = new List<int>();
             PrapareLanguagesForViewModel(model, languages);
             int groupIndex = 0;
             model.AvailablePhrases = _phraseService.GetPhrases().GroupBy(a => a.RemaiderTimeUtc).SelectMany(a =>
@@ -94,7 +96,8 @@ namespace WordsTeacher.Factories
                     Group = new SelectListGroup
                     {
                         Name = groupName,
-                    }
+                    },
+                    Selected = selectedPhrases.Any(c => c == b.Id)
                 });
             }).ToList();
             return model;
