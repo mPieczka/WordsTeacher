@@ -1,0 +1,13 @@
+﻿@using WordsTeacher.HtmlHelpers
+<script>
+    var successNotifications = "@(string.Join(';', TempData[NotificationsName.SuccesNotificationName] as string[] ?? new string[0]))"
+    var errorNotifications = "@(string.Join(';', TempData[NotificationsName.ErrorNotificationName] as string[] ?? new string[0]))"
+    var infoNotifications = "@(string.Join(';', TempData[NotificationsName.InformationNotificationName] as string[] ?? new string[0]))"
+
+    if (successNotifications)
+        successNotifications.split(';').forEach((value) => toastr.success(value));
+    if (errorNotifications)
+        errorNotifications.split(';').forEach((value) => toastr.error(value));
+    if (infoNotifications)
+        successNotifications.split(';').forEach((value) => toastr.info(value));
+</script>
