@@ -122,7 +122,7 @@ namespace WordsTeacher.Factories
             {
                 Draw = 1,
                 RecordsFiltered = phraseList.Count,
-                RecordTotal = phraseList.Count,
+                RecordsTotal = phraseList.Count,
                 Data = _mapper.Map<List<PhraseListModel>>(phraseList)
             };
         }

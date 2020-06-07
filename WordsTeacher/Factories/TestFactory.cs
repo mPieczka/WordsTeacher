@@ -36,7 +36,7 @@ namespace WordsTeacher.Factories
             {
                 Draw = 1,
                 RecordsFiltered = testsList.Count,
-                RecordTotal = testsList.Count,
+                RecordsTotal = testsList.Count,
                 Data = _mapper.Map<List<TestListModel>>(testsList)
             };
         }
