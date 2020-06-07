@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace WordsTeacher.Controllers.Extensions
+namespace WordsTeacher.Extensions
 {
     public static class ListExtensions
     {

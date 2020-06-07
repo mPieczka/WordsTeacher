@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
-using WordsTeacher.Controllers.Extensions;
+using WordsTeacher.Extensions;
 using WordsTeacher.Services;
 
 namespace WordsTeacher.Controllers
