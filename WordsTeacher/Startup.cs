@@ -45,6 +45,7 @@ namespace WordsTeacher
             services.AddScoped<PhraseService>();
             services.AddScoped<TestService>();
             services.AddScoped<LanguageService>();
+            services.AddScoped<AjaxFactory>();
             services.AddScoped(typeof(Repository<>));
         }
 

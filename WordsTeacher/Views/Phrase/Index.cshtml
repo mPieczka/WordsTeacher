@@ -25,16 +25,34 @@
 </table>
 <script id="actions-template" type="text/x-handlebars-template">
     <a class="btn btn-success" href="@Url.Action("Edit","Phrase")/{{model}}">Edit</a>
-    <a class="btn btn-danger" href="@Url.Action("Delete","Phrase")/{{model}}">Delete</a>
+    <button class="btn btn-danger" name="btn-delete" data-id="{{model}}">Delete</button>
 </script>
 <script>
     $(() => {
-        $('#pharse-table').DataTable({
-            "processing": true,
+        var phraseTable = $('#pharse-table').DataTable({
             "serverSide": true,
+            searching: false,
+            "drawCallback": function (settings) {
+                $("[name='btn-delete']").click((e) => {
+                    $.ajax({
+                        url: "@Url.Action("Delete","Phrase")",
+                        data: { id: $(e.target).data("id") },
+                        method: "POST",
+                        success: (response) => {
+                            if (response && response.message)
+                                if (response.success) {
+                                    toastr.success(response.message)
+                                    phraseTable.ajax.reload();
+                                }
+                                else
+                                    toastr.error(response.message)
+                        }
+                    })
+                });
+            },
             "ajax": {
                 url: "@Url.Action("GetPhrases", "Phrase")",
-                type:"POST"
+                type: "POST",
             },
             "columns": [
                 { "data": "basePhrase" },

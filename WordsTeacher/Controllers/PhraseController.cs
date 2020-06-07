@@ -1,21 +1,27 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using WordsTeacher.Factories;
+using WordsTeacher.HtmlHelpers;
+using WordsTeacher.Models.Ajax;
+using WordsTeacher.Models.Datatable;
 using WordsTeacher.Models.Phrases;
 using WordsTeacher.Services;
 
 namespace WordsTeacher.Controllers
 {
     [Authorize]
-    public class PhraseController : Controller
+    public class PhraseController : BaseController
     {
         private readonly PhraseService _phraseService;
         private readonly PhraseFactory _phraseFactory;
+        private readonly AjaxFactory _ajaxFactory;
 
-        public PhraseController(PhraseService phraseService, PhraseFactory phraseFactory)
+        public PhraseController(PhraseService phraseService, PhraseFactory phraseFactory,
+            AjaxFactory ajaxFactory)
         {
             _phraseService = phraseService;
             _phraseFactory = phraseFactory;
+            _ajaxFactory = ajaxFactory;
         }
 
         public IActionResult Index()
@@ -23,9 +29,9 @@ namespace WordsTeacher.Controllers
             return View();
         }
 
-        public IActionResult GetPhrases()
+        public IActionResult GetPhrases(DataTableReqest reqest)
         {
-            return Ok(_phraseFactory.PrepareList());
+            return Ok(_phraseFactory.PrepareList(reqest));
         }
 
         public IActionResult Create()
@@ -41,6 +47,7 @@ namespace WordsTeacher.Controllers
             {
                 var phrase = _phraseFactory.PreparePhrase(model);
                 _phraseService.AddPhrase(phrase);
+                AddSuccessMessage(DefaultMessages.CreatedMessage);
                 return RedirectToAction(nameof(Index));
             }
             return View("CreateEdit", model);
@@ -67,6 +74,7 @@ namespace WordsTeacher.Controllers
                 var phrase = _phraseService.GetPhraseById(model.Id);
                 _phraseFactory.PreparePhrase(model, phrase);
                 _phraseService.UpdatePhrase(phrase);
+                AddSuccessMessage(DefaultMessages.UpdatedMessage);
                 return RedirectToAction(nameof(Index));
             }
             return View(model);
@@ -78,10 +86,10 @@ namespace WordsTeacher.Controllers
 
             if (phrase == null)
             {
-                return NotFound();
+                return Ok(_ajaxFactory.NotFound());
             }
             _phraseService.DeletePhrase(phrase);
-            return RedirectToAction(nameof(Index));
+            return Ok(_ajaxFactory.SuccesfullyDeleted());
         }
 
         public IActionResult Details(int id)

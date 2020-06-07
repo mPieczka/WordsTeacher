@@ -24,6 +24,9 @@ a {
     border-color: #1861ac;
 }
 
+.dataTables_length{
+    display: none;
+}
 /* Sticky footer styles
 -------------------------------------------------- */
 html {

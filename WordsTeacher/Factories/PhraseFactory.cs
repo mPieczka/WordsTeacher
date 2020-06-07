@@ -114,13 +114,13 @@ namespace WordsTeacher.Factories
             return phrase;
         }
 
-        public DatatableResponseDTO<PhraseListModel> PrepareList()
+        public DatatableResponseDTO<PhraseListModel> PrepareList(DataTableReqest reqest)
         {
             var phraseList = _phraseService.GetPhrases();
 
             return new DatatableResponseDTO<PhraseListModel>()
             {
-                Draw = 1,
+                Draw = reqest.Draw,
                 RecordsFiltered = phraseList.Count,
                 RecordsTotal = phraseList.Count,
                 Data = _mapper.Map<List<PhraseListModel>>(phraseList)
