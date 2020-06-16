@@ -29,9 +29,9 @@ namespace WordsTeacher.Controllers
             return View();
         }
 
-        public IActionResult GetPhrases(DataTableReqest reqest)
+        public IActionResult GetPhrases(DataTableReqest request)
         {
-            return Ok(_phraseFactory.PrepareList(reqest));
+            return Ok(_phraseFactory.PrepareList(request));
         }
 
         public IActionResult Create()
