@@ -4,7 +4,7 @@
     ViewData["Title"] = "Index";
 }
 
-<h1>Index</h1>
+<h1>Tests</h1>
 <script src="~/lib/jquery-datatable/jquery.dataTables.min.js"></script>
 <script src="~/lib/handlebars/handlebars.js"></script>
 <link href="~/lib/jquery-datatable/jquery.dataTables.min.css" rel="stylesheet" />
@@ -13,7 +13,7 @@
     <a asp-action="Create">Create New</a>
 </p>
 
-<table id="pharse-table" class="display" style="width:100%">
+<table id="test-table" class="display" style="width:100%">
     <thead>
         <tr>
             <th>@Html.LabelFor(a => a.BaseLanguageName)</th>
@@ -26,13 +26,31 @@
 <script id="actions-template" type="text/x-handlebars-template">
     <a class="btn btn-dark" href="@Url.Action("Test","Test")/{{model}}">Start</a>
     <a class="btn btn-success" href="@Url.Action("Edit","Test")/{{model}}">Edit</a>
-    <a class="btn btn-danger" href="@Url.Action("Delete","Test")/{{model}}">Delete</a>
+    <button class="btn btn-danger" name="btn-delete" data-id="{{model}}">Delete</button>
 </script>
 <script>
     $(() => {
-        $('#pharse-table').DataTable({
-            "processing": true,
+        var testTable = $('#test-table').DataTable({
             "serverSide": true,
+            "searching": false,
+            "drawCallback": function (settings) {
+                $("[name='btn-delete']").click((e) => {
+                    $.ajax({
+                        url: "@Url.Action("Delete","Test")",
+                        data: { id: $(e.target).data("id") },
+                        method: "POST",
+                        success: (response) => {
+                            if (response && response.message)
+                                if (response.success) {
+                                    toastr.success(response.message)
+                                    testTable.ajax.reload();
+                                }
+                                else
+                                    toastr.error(response.message)
+                        }
+                    })
+                });
+            },
             "ajax": {
                 url: "@Url.Action("GetTests", "Test")",
                 type:"POST"

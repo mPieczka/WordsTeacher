@@ -9,26 +9,30 @@ using Microsoft.EntityFrameworkCore;
 using WordsTeacher.Data;
 using WordsTeacher.Data.Entities;
 using WordsTeacher.Factories;
+using WordsTeacher.HtmlHelpers;
+using WordsTeacher.Models.Datatable;
 using WordsTeacher.Models.Tests;
 using WordsTeacher.Services;
 
 namespace WordsTeacher.Controllers
 {
     [Authorize]
-    public class TestController : Controller
+    public class TestController : BaseController
     {
         private readonly TestFactory _testFactory;
         private readonly TestService _testService;
         private readonly PhraseService _phraseService;
         private readonly PhraseFactory _phraseFactory;
+        private readonly AjaxFactory _ajaxFactory;
 
         public TestController(TestFactory testFactory, TestService testService,
-            PhraseService phraseService, PhraseFactory phraseFactory)
+            PhraseService phraseService, PhraseFactory phraseFactory, AjaxFactory ajaxFactory)
         {
             _testFactory = testFactory;
             _testService = testService;
             _phraseService = phraseService;
             _phraseFactory = phraseFactory;
+            _ajaxFactory = ajaxFactory;
         }
 
         public IActionResult Index()
@@ -36,9 +40,9 @@ namespace WordsTeacher.Controllers
             return View(new TestListModel());
         }
 
-        public IActionResult GetTests()
+        public IActionResult GetTests(DataTableReqest request)
         {
-            return Ok(_testFactory.PrepareList());
+            return Ok(_testFactory.PrepareList(request));
         }
 
         public IActionResult Create()
@@ -55,6 +59,7 @@ namespace WordsTeacher.Controllers
                 var test = _testFactory.PrepareTest(model);
                 _testService.Insert(test);
 
+                AddSuccessMessage(DefaultMessages.CreatedMessage);
                 return RedirectToAction(nameof(Index));
             }
             return View("CreateEdit", _testFactory.PreapareAvailableProperties(model));
@@ -81,6 +86,7 @@ namespace WordsTeacher.Controllers
 
                 _testFactory.PrepareTest(model, test);
                 _testService.Update(test);
+                AddSuccessMessage(DefaultMessages.UpdatedMessage);
 
                 return RedirectToAction(nameof(Index));
             }
@@ -89,7 +95,14 @@ namespace WordsTeacher.Controllers
 
         public IActionResult Delete(int id)
         {
-            return Ok();
+            var test = _testService.GetById(id);
+
+            if (test == null)
+            {
+                return Ok(_ajaxFactory.NotFound());
+            }
+            _testService.Delete(test);
+            return Ok(_ajaxFactory.SuccesfullyDeleted());
         }
 
         public IActionResult Test(int id)
@@ -105,20 +118,17 @@ namespace WordsTeacher.Controllers
             });
         }
 
-        public IActionResult CompleteTest(TestCompleteViewModel model)
+        public IActionResult CompleteTest(int id, int correctAnswers)
         {
-            var test = _testService.GetById(model.Id);
+            var test = _testService.GetById(id);
             if (test == null)
-                return RedirectToAction(nameof(Test), new { model.Id });
+                return Ok(_ajaxFactory.NotFound());
 
-            test.CorrectAnswers = test.Phrases.Count(a =>
-                model.Phrases.First(b => b.Id == a.PhraseId).TranslatedPhrase.Equals(
-                (test.TranslationLanguage.Id == a.Phrase.PhraseLanguage.Id ?
-                a.Phrase.BasePhrase : a.Phrase.TranslatedPhrase), StringComparison.InvariantCultureIgnoreCase));
+            test.CorrectAnswers = correctAnswers;
 
             _testService.Update(test);
 
-            return RedirectToAction(nameof(Index));
+            return Ok(_ajaxFactory.Successful());
         }
     }
 }

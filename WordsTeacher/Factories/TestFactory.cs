@@ -28,13 +28,13 @@ namespace WordsTeacher.Factories
             _phraseService = phraseService;
         }
 
-        public DatatableResponseDTO<TestListModel> PrepareList()
+        public DatatableResponseDTO<TestListModel> PrepareList(DataTableReqest reqest)
         {
             var testsList = _testService.GetTests();
 
             return new DatatableResponseDTO<TestListModel>()
             {
-                Draw = 1,
+                Draw = reqest.Draw,
                 RecordsFiltered = testsList.Count,
                 RecordsTotal = testsList.Count,
                 Data = _mapper.Map<List<TestListModel>>(testsList)
@@ -53,7 +53,11 @@ namespace WordsTeacher.Factories
 
         public Test PrepareTest(TestViewModel model, Test test)
         {
-            return _mapper.Map(model, test);
+            _mapper.Map(model, test);
+            _phraseService.GetPhrases(
+                searchedIds: model.PickedPharses.Except(test.Phrases.Select(a => a.PhraseId)).ToList())
+                .ForEach(a => test.Phrases.Add(new PhraseTestMapping { Phrase = a }));
+            return test;
         }
 
         public Test PrepareTest(TestViewModel model)
@@ -87,7 +91,7 @@ namespace WordsTeacher.Factories
                 selectedPhrases = new List<int>();
             PrapareLanguagesForViewModel(model, languages);
             int groupIndex = 0;
-            model.AvailablePhrases = _phraseService.GetPhrases().GroupBy(a => a.RemaiderTimeUtc).SelectMany(a =>
+            model.AvailablePhrases = _phraseService.GetPhrases().GroupBy(a => a.RemaiderTimeUtc.GetValueOrDefault().Date).SelectMany(a =>
             {
                 var groupName = $"Group {++groupIndex}"; return a.Select(b => new SelectListItem
                 {

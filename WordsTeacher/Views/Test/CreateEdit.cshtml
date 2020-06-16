@@ -3,30 +3,44 @@
 @{
     ViewData["Title"] = Model.Id > 0 ? "Edit" : "Create";
 }
+<form asp-action="@(Model.Id > 0 ? "Edit" : "Create")">
 
-<h2>Test</h2>
-<hr />
-<div class="row">
-    <div class="col-md-4">
-        <form asp-action="@(Model.Id > 0 ? "Edit" : "Create")">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <input hidden asp-for="Id" />
-            <div class="form-group">
-                <label asp-for="PickedBaseLanguage" class="control-label"></label>
-                <select asp-for="PickedBaseLanguage" asp-items="Model.AvailableLanguages" class="form-control"></select>
-                <span asp-validation-for="PickedBaseLanguage" class="text-danger"></span>
+    <div>
+        <h2 class="d-inline">Test</h2>
+        <div class="float-right">
+            <div>
+                <a asp-action="Index" class="mr-5">Back to List</a>
+                <input type="submit" value="@(Model.Id > 0 ? "Edit" : "Create")" class="btn btn-primary" />
             </div>
-            <div class="form-group">
-                <label asp-for="PickedTranslationLanguage" class="control-label"></label>
-                <select asp-for="PickedTranslationLanguage" asp-items="Model.AvailableLanguages" class="form-control"></select>
-                <span asp-validation-for="PickedTranslationLanguage" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="PickedPharses"></label>
+        </div>
+    </div>
+    <hr />
+    <h4>Languages</h4>
+    <hr />
+    <div class="row">
+        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+        <input hidden asp-for="Id" />
+        <div class="form-group col-md-4">
+            <label asp-for="PickedBaseLanguage" class="control-label"></label>
+            <select asp-for="PickedBaseLanguage" asp-items="Model.AvailableLanguages" class="form-control"></select>
+            <span asp-validation-for="PickedBaseLanguage" class="text-danger"></span>
+        </div>
+        <div class="form-group col-md-4">
+            <label asp-for="PickedTranslationLanguage" class="control-label"></label>
+            <select asp-for="PickedTranslationLanguage" asp-items="Model.AvailableLanguages" class="form-control"></select>
+            <span asp-validation-for="PickedTranslationLanguage" class="text-danger"></span>
+        </div>
+    </div>
+    <h4>Content</h4>
+    <hr />
+    <div class="row">
+        <div class="form-group col-md-4">
+            <label asp-for="PickedPharses"></label>
+            <div>
                 <select name="@nameof(Model.PickedPharses)" id="@nameof(Model.PickedPharses)" class="form-control" multiple>
-                    @foreach (var pharseGroup in Model.AvailablePhrases.GroupBy(a => a.Group))
+                    @foreach (var pharseGroup in Model.AvailablePhrases.GroupBy(a => a.Group.Name))
                     {
-                        <optgroup label="@pharseGroup.Key.Name">
+                        <optgroup label="@pharseGroup.Key">
                             @foreach (var phrase in pharseGroup)
                             {
                                 <option value="@phrase.Value" disabled="@(phrase.Disabled ? "disable": null)" selected="@(phrase.Selected ? "selected": null)">
@@ -37,21 +51,15 @@
                     }
                 </select>
             </div>
-            <div class="form-group">
-                <input type="submit" value="Create" class="btn btn-primary" />
-            </div>
-        </form>
+        </div>
     </div>
-</div>
-
-<div>
-    <a asp-action="Index">Back to List</a>
-</div>
+</form>
 <script>
     $(() => {
         $("#@Html.IdFor(a => a.PickedPharses)").multiselect({
             enableClickableOptGroups: true,
-            enableCollapsibleOptGroups: true
+            enableCollapsibleOptGroups: true,
+            maxHeight: 300
         });
     })
 </script>

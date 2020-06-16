@@ -20,12 +20,16 @@ namespace WordsTeacher.Services
             return _phraseRepository.Table.FirstOrDefault(a => a.Id == id);
         }
 
-        public List<Phrase> GetPhrases(int pageSize = int.MaxValue, int pageIndex = 0, bool? toRemaind = null)
+        public List<Phrase> GetPhrases(int pageSize = int.MaxValue, int pageIndex = 0, bool? toRemaind = null,
+            List<int> searchedIds = null)
         {
             var query = _phraseRepository.Table;
 
             if (toRemaind.HasValue && toRemaind.Value)
                 query = query.Where(a => a.RemaiderTimeUtc <= DateTime.UtcNow);
+
+            if (searchedIds != null)
+                query = query.Where(a => searchedIds.Contains(a.Id));
 
             query = query.OrderByDescending(a => a.Id);
 

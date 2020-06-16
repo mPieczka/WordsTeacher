@@ -24,7 +24,7 @@ a {
     border-color: #1861ac;
 }
 
-.dataTables_length{
+.dataTables_length {
     display: none;
 }
 /* Sticky footer styles
@@ -104,4 +104,37 @@ body {
     color: red;
     font-size: 24px;
     margin: 0 40px;
+}
+
+.multiselect.btn {
+    border: 1px solid #ced4da;
+}
+
+.multiselect-container .checkbox {
+    width: max-content;
+}
+
+.test-answer .fa-check {
+    color: green;
+    font-size: 24px;
+}
+
+.test-answer .fa-times {
+    color: red;
+    font-size: 24px;
+}
+
+.test-answer {
+    background: #ffd9095c;
+}
+
+.index-card-correct, .index-card-incorrect{
+    cursor: pointer;
+}
+input.success {
+    background: #51ff5140;
+}
+
+input.failure {
+    background: #ff515140;
 }

@@ -5,10 +5,10 @@
             <span id="index-card-switch-sides">
                 <i class="fas fa-sync float-left"></i>
             </span>
-            <span id="index-card-correct">
+            <span class="index-card-correct">
                 <i class="fas fa-check"></i>
             </span>
-            <span id="index-card-incorrect">
+            <span class="index-card-incorrect">
                 <i class="fas fa-times"></i>
             </span>
             <span id="index-card-next">
@@ -58,11 +58,11 @@
             $(".index-card .card-body").toggleClass("active");
         });
 
-        $("#index-card-correct").click((e) => {
+        $(".index-card-correct").click((e) => {
             SetPhraseState(true);
         });
 
-        $("#index-card-incorrect").click((e) => {
+        $(".index-card-incorrect").click((e) => {
             SetPhraseState(false);
         });
 

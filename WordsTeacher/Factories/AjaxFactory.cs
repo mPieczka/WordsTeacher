@@ -19,5 +19,10 @@ namespace WordsTeacher.Factories
         {
             return new AjaxResponse { Success = true, Message = DefaultMessages.DeletedMessage };
         }
+
+        public AjaxResponse Successful()
+        {
+            return new AjaxResponse { Success = true };
+        }
     }
 }
