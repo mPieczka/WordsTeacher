@@ -16,25 +16,31 @@ namespace WordsTeacher
 {
     public class Startup
     {
-        public Startup(IConfiguration configuration)
-        {
-            Configuration = configuration;
-        }
+        private readonly IWebHostEnvironment _env;
+        private readonly IConfiguration _configuration;
 
-        public IConfiguration Configuration { get; }
+        public Startup(IConfiguration configuration, IWebHostEnvironment env)
+        {
+            _env = env;
+            _configuration = configuration;
+        }
 
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddDbContext<ApplicationDbContext>(options =>
                 options.UseLazyLoadingProxies().UseSqlServer(
-                    Configuration.GetConnectionString("DefaultConnection")));
+                    _configuration.GetConnectionString("DefaultConnection")));
             services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
                 .AddEntityFrameworkStores<ApplicationDbContext>();
             services.AddAutoMapper(typeof(Startup));
             services.AddControllersWithViews();
-            services.AddRazorPages()
-                .AddRazorRuntimeCompilation();
+
+            IMvcBuilder builder = services.AddRazorPages();
+#if DEBUG
+            if (_env.IsDevelopment())
+                builder.AddRazorRuntimeCompilation();
+#endif
 
             services.Configure<IISOptions>(options =>
             {
