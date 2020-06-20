@@ -123,7 +123,7 @@ namespace WordsTeacher.Factories
                 Draw = reqest.Draw,
                 RecordsFiltered = phraseList.Count,
                 RecordsTotal = phraseList.Count,
-                Data = _mapper.Map<List<PhraseListModel>>(phraseList)
+                Data = _mapper.Map<List<PhraseListModel>>(phraseList.Skip(reqest.Start).Take(reqest.Length))
             };
         }
 

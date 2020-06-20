@@ -37,7 +37,7 @@ namespace WordsTeacher.Factories
                 Draw = reqest.Draw,
                 RecordsFiltered = testsList.Count,
                 RecordsTotal = testsList.Count,
-                Data = _mapper.Map<List<TestListModel>>(testsList)
+                Data = _mapper.Map<List<TestListModel>>(testsList.Skip(reqest.Start).Take(reqest.Length))
             };
         }
 
