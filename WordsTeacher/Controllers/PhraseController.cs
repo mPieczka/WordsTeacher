@@ -1,5 +1,7 @@
-﻿using Microsoft.AspNetCore.Authorization;
+﻿using AzureSpeechSyntezator.Services;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using System.Threading.Tasks;
 using WordsTeacher.Factories;
 using WordsTeacher.HtmlHelpers;
 using WordsTeacher.Models.Ajax;
@@ -15,13 +17,15 @@ namespace WordsTeacher.Controllers
         private readonly PhraseService _phraseService;
         private readonly PhraseFactory _phraseFactory;
         private readonly AjaxFactory _ajaxFactory;
+        private readonly SpeechSyntezator _speechSyntezator;
 
         public PhraseController(PhraseService phraseService, PhraseFactory phraseFactory,
-            AjaxFactory ajaxFactory)
+            AjaxFactory ajaxFactory, SpeechSyntezator speechSyntezator)
         {
             _phraseService = phraseService;
             _phraseFactory = phraseFactory;
             _ajaxFactory = ajaxFactory;
+            _speechSyntezator = speechSyntezator;
         }
 
         public IActionResult Index()
@@ -116,6 +120,20 @@ namespace WordsTeacher.Controllers
             _phraseService.UpdatePhrase(phrase);
 
             return Ok(new { Success = true });
+        }
+
+        public async Task<IActionResult> GetPhraseAudio(int phraseId)
+        {
+            var phrase = _phraseService.GetPhraseById(phraseId);
+            if (phrase == null)
+                return null;
+            string phraseText;
+            if (string.Equals(phrase.PhraseLanguage.Code, "pl", System.StringComparison.OrdinalIgnoreCase))
+                phraseText = phrase.TranslatedPhrase;
+            else
+                phraseText = phrase.BasePhrase;
+
+            return File(System.IO.File.ReadAllBytes(await _speechSyntezator.Speak(phraseText)), "audio/wav");
         }
     }
 }

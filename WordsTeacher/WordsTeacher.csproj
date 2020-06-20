@@ -69,4 +69,8 @@
   <ItemGroup>
     <None Include="bundleconfig.json" />
   </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\AzureSpeechSyntezator\AzureSpeechSyntezator.csproj" />
+  </ItemGroup>
 </Project>

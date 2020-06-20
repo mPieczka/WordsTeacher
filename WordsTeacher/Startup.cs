@@ -1,4 +1,5 @@
 using AutoMapper;
+using AzureSpeechSyntezator.DependecyInjection;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Identity;
@@ -47,6 +48,7 @@ namespace WordsTeacher
             services.AddScoped<LanguageService>();
             services.AddScoped<AjaxFactory>();
             services.AddScoped(typeof(Repository<>));
+            AzureSpeechSyntezatorDependencies.AddServices(services);
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

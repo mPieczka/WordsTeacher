@@ -5,10 +5,10 @@
             <span id="index-card-switch-sides">
                 <i class="fas fa-sync float-left"></i>
             </span>
-            <span class="index-card-correct">
+            <span class="index-card-correct clickable-icon">
                 <i class="fas fa-check"></i>
             </span>
-            <span class="index-card-incorrect">
+            <span class="index-card-incorrect clickable-icon">
                 <i class="fas fa-times"></i>
             </span>
             <span id="index-card-next">
@@ -27,6 +27,9 @@
 </div>
 <script id="index-card-front-template" type="text/x-handlebars-template">
     <div class="center">
+        <span class="clickable-icon" id="phrase-audio-button">
+            <i class="fas fa-volume-up"></i>
+        </span>
         <p>
             <h2>{{basePhrase}}</h2>
         </p>
@@ -85,6 +88,10 @@
                     $(".index-card .index-card-back").html(
                         (Handlebars.compile($("#index-card-back-template").html()))(response)
                     );
+                    $("#phrase-audio-button").click((e) => {
+                        var audio = new Audio(`@Url.Action("GetPhraseAudio","Phrase")?phraseId=${response.id}`);
+                        audio.play();
+                    })
                 }
             })
     }

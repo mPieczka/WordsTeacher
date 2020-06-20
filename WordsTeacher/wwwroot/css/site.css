@@ -116,20 +116,19 @@ body {
 
 .test-answer .fa-check {
     color: green;
-    font-size: 24px;
 }
 
 .test-answer .fa-times {
     color: red;
-    font-size: 24px;
 }
 
 .test-answer {
     background: #ffd9095c;
 }
 
-.index-card-correct, .index-card-incorrect{
+.clickable-icon {
     cursor: pointer;
+    font-size: 24px;
 }
 input.success {
     background: #51ff5140;

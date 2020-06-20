@@ -3,7 +3,9 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.30002.166
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WordsTeacher", "WordsTeacher\WordsTeacher.csproj", "{CD25D701-64B7-4EC9-BB9E-B02BBD93620F}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WordsTeacher", "WordsTeacher\WordsTeacher.csproj", "{CD25D701-64B7-4EC9-BB9E-B02BBD93620F}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AzureSpeechSyntezator", "AzureSpeechSyntezator\AzureSpeechSyntezator.csproj", "{86CC2CCA-E05E-41C8-8495-38FE1B1484BF}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -15,6 +17,10 @@ Global
 		{CD25D701-64B7-4EC9-BB9E-B02BBD93620F}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{CD25D701-64B7-4EC9-BB9E-B02BBD93620F}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{CD25D701-64B7-4EC9-BB9E-B02BBD93620F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{86CC2CCA-E05E-41C8-8495-38FE1B1484BF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{86CC2CCA-E05E-41C8-8495-38FE1B1484BF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{86CC2CCA-E05E-41C8-8495-38FE1B1484BF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{86CC2CCA-E05E-41C8-8495-38FE1B1484BF}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
