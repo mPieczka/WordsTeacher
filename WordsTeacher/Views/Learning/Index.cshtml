@@ -76,12 +76,14 @@
 
     function GetNextPhrase() {
         SetNextPhrase();
-        if(currentPhraseId)
+        if (currentPhraseId) {
             $.ajax({
                 url: "@Url.Action("Details","Phrase")",
                 method: "POST",
                 data: { id: currentPhraseId },
                 success: (response) => {
+                    PlaySound();
+
                     $(".index-card .index-card-front").html(
                         (Handlebars.compile($("#index-card-front-template").html()))(response)
                     );
@@ -89,11 +91,23 @@
                         (Handlebars.compile($("#index-card-back-template").html()))(response)
                     );
                     $("#phrase-audio-button").click((e) => {
-                        var audio = new Audio(`@Url.Action("GetPhraseAudio","Phrase")?phraseId=${response.id}`);
-                        audio.play();
+                        PlaySound();
                     })
                 }
             })
+        }
+        else {
+            window.location = "@Url.Action("Index", "Phrase")"
+        }
+
+    }
+
+    function PlaySound() {
+        var audio = new Audio(`@Url.Action("GetPhraseAudio","Phrase")?phraseId=${currentPhraseId}`);
+        audio.addEventListener("canplaythrough", event => {
+            audio.play();
+
+        });
     }
 
     function SetPhraseState(correct) {
