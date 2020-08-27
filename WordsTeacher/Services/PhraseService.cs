@@ -26,7 +26,7 @@ namespace WordsTeacher.Services
             var query = _phraseRepository.Table;
 
             if (toRemaind.HasValue && toRemaind.Value)
-                query = query.Where(a => a.RemaiderTimeUtc <= DateTime.UtcNow);
+                query = query.Where(a => a.RemaiderTimeUtc != null && a.RemaiderTimeUtc.Value.Date <= DateTime.UtcNow);
 
             if (searchedIds != null)
                 query = query.Where(a => searchedIds.Contains(a.Id));
