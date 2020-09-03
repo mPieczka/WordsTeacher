@@ -50,7 +50,6 @@
 </script>
 
 <script>
-    let index = -1;
     let phraseIds = [@string.Join(", ",Model)];
     let currentPhraseId;
 
@@ -123,10 +122,7 @@
     }
 
     function SetNextPhrase() {
-        index++;
-        if (index == phraseIds.length)
-            index = 0;
-        currentPhraseId = phraseIds[index];
+        currentPhraseId = phraseIds[0];
     }
 </script>
 
