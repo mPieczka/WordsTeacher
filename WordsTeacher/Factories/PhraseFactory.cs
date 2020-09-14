@@ -77,6 +77,27 @@ namespace WordsTeacher.Factories
                 return DateTime.UtcNow.AddDays(_firstCatalogDaysRemainder);
         }
 
+        public PhraseViewModel PreparePhraseViewModel(Phrase phrase, Test test)
+        {
+            if (phrase == null || test == null)
+                return PreparePhraseViewModel();
+
+            var sameLanguage = test.BaseLanguage.Id == phrase.PhraseLanguage.Id;
+            var model = new PhraseViewModel
+            {
+                Id = phrase.Id,
+                BasePhrase = sameLanguage ? phrase.BasePhrase : phrase.TranslatedPhrase,
+                BasePhrasePronunciation = sameLanguage ? phrase.BasePhrasePronunciation : phrase.TranslationPronunciation,
+                TranslatedPhrase = sameLanguage ? phrase.TranslatedPhrase : phrase.BasePhrase,
+                TranslationPronunciation = sameLanguage ? phrase.TranslationPronunciation : phrase.BasePhrasePronunciation,
+                PickedBaseLanguage = sameLanguage ? phrase.PhraseLanguage.Id : phrase.TranslationLanguage.Id,
+                PickedTranslationLanguage = sameLanguage ? phrase.TranslationLanguage.Id : phrase.PhraseLanguage.Id,
+
+            };
+            PrapareLanguagesForViewModel(model);
+            return model;
+        }
+
         public PhraseViewModel PreparePhraseViewModel(Phrase phrase)
         {
             if (phrase == null)

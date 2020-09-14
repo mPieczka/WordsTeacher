@@ -114,7 +114,7 @@ namespace WordsTeacher.Controllers
             return View(new TestCompleteViewModel
             {
                 Id = id,
-                Phrases = test.Phrases.Select(a => _phraseFactory.PreparePhraseViewModel(a.Phrase)).ToList()
+                Phrases = test.Phrases.Select(a => _phraseFactory.PreparePhraseViewModel(a.Phrase, test)).ToList()
             });
         }
 
