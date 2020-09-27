@@ -102,11 +102,13 @@
     }
 
     function PlaySound() {
-        var audio = new Audio(`@Url.Action("GetPhraseAudio","Phrase")?phraseId=${currentPhraseId}`);
-        audio.addEventListener("canplaythrough", event => {
-            audio.play();
+        if ($(".index-card-front.active").length) {
+            var audio = new Audio(`@Url.Action("GetPhraseAudio","Phrase")?phraseId=${currentPhraseId}`);
+            audio.addEventListener("canplaythrough", event => {
+                audio.play();
 
-        });
+            });
+        }
     }
 
     function SetPhraseState(correct) {
