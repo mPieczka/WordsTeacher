@@ -1,5 +1,6 @@
 using AutoMapper;
 using AzureSpeechSyntezator.DependecyInjection;
+using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Identity;
@@ -31,8 +32,24 @@ namespace WordsTeacher
             services.AddDbContext<ApplicationDbContext>(options =>
                 options.UseLazyLoadingProxies().UseSqlServer(
                     _configuration.GetConnectionString("DefaultConnection")));
-            services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
+
+            services.AddDistributedMemoryCache();
+
+            services.AddSession(options =>
+            {
+                options.IdleTimeout = TimeSpan.FromMinutes(60);
+                options.Cookie.HttpOnly = true;
+                options.Cookie.IsEssential = true;
+            });
+
+
+            services.AddDefaultIdentity<IdentityUser>(
+                options => 
+                { 
+                    options.SignIn.RequireConfirmedAccount = true; 
+                })
                 .AddEntityFrameworkStores<ApplicationDbContext>();
+
             services.AddAutoMapper(typeof(Startup));
             services.AddControllersWithViews();
 
@@ -74,7 +91,7 @@ namespace WordsTeacher
             serviceProvider.GetService<ApplicationDbContext>().Database.Migrate();
             app.UseHttpsRedirection();
             app.UseStaticFiles();
-
+            app.UseSession();
             app.UseRouting();
 
             app.UseAuthentication();
