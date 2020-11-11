@@ -10,9 +10,9 @@ namespace WordsTeacher.Controllers
 {
     public class BaseController : Controller
     {
-        private List<string> _successMessages;
-        private List<string> _errorMessages;
-        private List<string> _infoMessages;
+        private readonly List<string> _successMessages;
+        private readonly List<string> _errorMessages;
+        private readonly List<string> _infoMessages;
         private bool _initlialized;
 
         public BaseController()

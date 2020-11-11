@@ -42,12 +42,8 @@ namespace WordsTeacher
                 options.Cookie.IsEssential = true;
             });
 
-
             services.AddDefaultIdentity<IdentityUser>(
-                options => 
-                { 
-                    options.SignIn.RequireConfirmedAccount = true; 
-                })
+                options => options.SignIn.RequireConfirmedAccount = true)
                 .AddEntityFrameworkStores<ApplicationDbContext>();
 
             services.AddAutoMapper(typeof(Startup));
@@ -59,10 +55,7 @@ namespace WordsTeacher
                 builder.AddRazorRuntimeCompilation();
 #endif
 
-            services.Configure<IISOptions>(options =>
-            {
-                options.ForwardClientCertificate = false;
-            });
+            services.Configure<IISOptions>(options => options.ForwardClientCertificate = false);
 
             services.AddScoped<PhraseFactory>();
             services.AddScoped<TestFactory>();

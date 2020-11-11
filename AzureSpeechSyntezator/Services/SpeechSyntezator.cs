@@ -31,7 +31,7 @@ namespace AzureSpeechSyntezator.Services
                 using (var audioConfig = AudioConfig.FromWavFileOutput(filePath))
                 using (var synthesizer = new SpeechSynthesizer(config, audioConfig))
                 {
-                    await synthesizer.SpeakTextAsync(text);
+                    await synthesizer.SpeakTextAsync(text).ConfigureAwait(false);
                 }
                 _audioService.LouderWavFile(filePath, 1.5f);
             }

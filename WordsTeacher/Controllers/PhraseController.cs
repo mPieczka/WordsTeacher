@@ -133,7 +133,7 @@ namespace WordsTeacher.Controllers
             else
                 phraseText = phrase.BasePhrase;
 
-            return File(System.IO.File.ReadAllBytes(await _speechSyntezator.Speak(phraseText)), "audio/wav");
+            return File(System.IO.File.ReadAllBytes(await _speechSyntezator.Speak(phraseText).ConfigureAwait(false)), "audio/wav");
         }
     }
 }

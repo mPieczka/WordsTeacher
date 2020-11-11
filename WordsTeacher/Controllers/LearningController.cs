@@ -19,12 +19,12 @@ namespace WordsTeacher.Controllers
 
         public IActionResult Index()
         {
-            return View(_phraseService.GetPhrases(toRemaind: true).Select(a => a.Id).ToList().Shuffle());
+            return View(_phraseService.GetPhrases(toRemaind: true).ConvertAll(a => a.Id).Shuffle());
         }
 
         public IActionResult CheckIfAble()
         {
-            return Ok(_phraseService.GetPhrases(toRemaind: true).Select(a => a.Id).Any());
+            return Ok(_phraseService.GetPhrases(toRemaind: true).Count > 0);
         }
     }
 }
