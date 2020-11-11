@@ -125,7 +125,14 @@
     }
 
     function SetNextPhrase() {
-        currentPhraseId = phraseIds[0];
+        let currentElementIndex = phraseIds.findIndex((obj, index) => obj == currentPhraseId);
+        if (currentPhraseId && currentElementIndex > -1) {
+            currentPhraseId = currentElementIndex == (phraseIds.length - 1) ?
+                phraseIds[0] : phraseIds[currentElementIndex + 1];
+        }
+        else {
+            currentPhraseId = phraseIds[0];
+        }
     }
 </script>
 
