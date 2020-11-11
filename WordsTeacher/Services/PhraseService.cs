@@ -15,9 +15,14 @@ namespace WordsTeacher.Services
             _phraseRepository = phraseRepository;
         }
 
-        public Phrase GetPhraseById(int id)
+        public Phrase GetPhrase(int id)
         {
             return _phraseRepository.Table.FirstOrDefault(a => a.Id == id);
+        }
+
+        public Phrase GetPhrase(string basePhrase)
+        {
+            return _phraseRepository.Table.FirstOrDefault(a => a.BasePhrase == basePhrase);
         }
 
         public List<Phrase> GetPhrases(int pageSize = int.MaxValue, int pageIndex = 0, bool? toRemaind = null,

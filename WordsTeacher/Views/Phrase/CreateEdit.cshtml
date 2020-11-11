@@ -56,7 +56,24 @@
         </div>
     </div>
 </form>
-
+<script>
+    $(() => {
+        $("#@Html.IdFor(a=> a.BasePhrase)").focusout((e) => {
+            $.ajax({
+                url: "@Url.Action("CheckIfPhraseExists", "Phrase")",
+                data: { phraseText: $(e.target).val() },
+                success: (response) => {
+                    if (response.success) {
+                        if (response.message)
+                            $(e.target).siblings(".text-danger").html(response.message);
+                    }
+                    else
+                        console.log(response);
+                }
+            })
+        })
+    })
+</script>
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
 }

@@ -59,7 +59,7 @@ namespace WordsTeacher.Controllers
 
         public IActionResult Edit(int id)
         {
-            var phrase = _phraseService.GetPhraseById(id);
+            var phrase = _phraseService.GetPhrase(id);
 
             if (phrase == null)
             {
@@ -75,7 +75,7 @@ namespace WordsTeacher.Controllers
         {
             if (ModelState.IsValid)
             {
-                var phrase = _phraseService.GetPhraseById(model.Id);
+                var phrase = _phraseService.GetPhrase(model.Id);
                 _phraseFactory.PreparePhrase(model, phrase);
                 _phraseService.UpdatePhrase(phrase);
                 AddSuccessMessage(DefaultMessages.UpdatedMessage);
@@ -86,7 +86,7 @@ namespace WordsTeacher.Controllers
 
         public IActionResult Delete(int id)
         {
-            var phrase = _phraseService.GetPhraseById(id);
+            var phrase = _phraseService.GetPhrase(id);
 
             if (phrase == null)
             {
@@ -98,7 +98,7 @@ namespace WordsTeacher.Controllers
 
         public IActionResult Details(int id)
         {
-            var phrase = _phraseService.GetPhraseById(id);
+            var phrase = _phraseService.GetPhrase(id);
 
             if (phrase == null)
             {
@@ -110,7 +110,7 @@ namespace WordsTeacher.Controllers
 
         public IActionResult SetPhraseLearningState(int id, bool correct)
         {
-            var phrase = _phraseService.GetPhraseById(id);
+            var phrase = _phraseService.GetPhrase(id);
 
             if (phrase == null)
             {
@@ -124,7 +124,7 @@ namespace WordsTeacher.Controllers
 
         public async Task<IActionResult> GetPhraseAudio(int phraseId)
         {
-            var phrase = _phraseService.GetPhraseById(phraseId);
+            var phrase = _phraseService.GetPhrase(phraseId);
             if (phrase == null)
                 return null;
             string phraseText;
@@ -134,6 +134,14 @@ namespace WordsTeacher.Controllers
                 phraseText = phrase.BasePhrase;
 
             return File(System.IO.File.ReadAllBytes(await _speechSyntezator.Speak(phraseText).ConfigureAwait(false)), "audio/wav");
+        }
+
+        public IActionResult CheckIfPhraseExists(string phraseText)
+        {
+            var phrase = _phraseService.GetPhrase(phraseText);
+
+            return Ok(new AjaxResponse { Success = true, 
+                Message = phrase == null ? "" : $"Phrase with provided name already exists, its translation {phrase.TranslatedPhrase}. Are you sure you want to add another one?" });
         }
     }
 }
