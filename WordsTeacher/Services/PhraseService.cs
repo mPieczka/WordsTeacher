@@ -21,7 +21,7 @@ namespace WordsTeacher.Services
         }
 
         public List<Phrase> GetPhrases(int pageSize = int.MaxValue, int pageIndex = 0, bool? toRemaind = null,
-            List<int> searchedIds = null)
+            List<int> searchedIds = null, string searchedText = null)
         {
             var query = _phraseRepository.Table;
 
@@ -30,6 +30,12 @@ namespace WordsTeacher.Services
 
             if (searchedIds != null)
                 query = query.Where(a => searchedIds.Contains(a.Id));
+
+            if (!string.IsNullOrEmpty(searchedText))
+            {
+                query = query.Where(a => a.BasePhrase.Contains(searchedText) || a.TranslatedPhrase.Contains(searchedText) ||
+                a.BasePhrasePronunciation.Contains(searchedText) || a.TranslationPronunciation.Contains(searchedText));
+            }
 
             query = query.OrderByDescending(a => a.Id);
 

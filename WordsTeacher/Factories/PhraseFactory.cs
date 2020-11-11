@@ -135,16 +135,16 @@ namespace WordsTeacher.Factories
             return phrase;
         }
 
-        public DatatableResponseDTO<PhraseListModel> PrepareList(DataTableReqest reqest)
+        public DatatableResponseDTO<PhraseListModel> PrepareList(DataTableReqest request)
         {
-            var phraseList = _phraseService.GetPhrases();
+            var phraseList = _phraseService.GetPhrases(searchedText: request.Search.Value);
 
             return new DatatableResponseDTO<PhraseListModel>()
             {
-                Draw = reqest.Draw,
+                Draw = request.Draw,
                 RecordsFiltered = phraseList.Count,
                 RecordsTotal = phraseList.Count,
-                Data = _mapper.Map<List<PhraseListModel>>(phraseList.Skip(reqest.Start).Take(reqest.Length))
+                Data = _mapper.Map<List<PhraseListModel>>(phraseList.Skip(request.Start).Take(request.Length))
             };
         }
 

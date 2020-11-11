@@ -31,7 +31,7 @@
     $(() => {
         var phraseTable = $('#pharse-table').DataTable({
             "serverSide": true,
-            searching: false,
+            searching: true,
             "drawCallback": function (settings) {
                 $("[name='btn-delete']").click((e) => {
                     $.ajax({
