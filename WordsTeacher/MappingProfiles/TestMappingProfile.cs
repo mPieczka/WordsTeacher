@@ -18,6 +18,7 @@ namespace WordsTeacher.MappingProfiles
             CreateMap<TestViewModel, Test>().ForMember(dest => dest.Id, opt => opt.Ignore());
             CreateMap<Test, TestListModel>()
                 .ForMember(dest => dest.TranslationLanguageName, opt => opt.MapFrom(src => src.TranslationLanguage != null ? src.TranslationLanguage.FullName : ""))
+                .ForMember(dest => dest.CorrectAnswers, opt => opt.MapFrom(src => $"{src.CorrectAnswers} / {src.Phrases.Count}"))
                 .ForMember(dest => dest.BaseLanguageName, opt => opt.MapFrom(src => src.BaseLanguage != null ? src.BaseLanguage.FullName : ""));
         }
     }

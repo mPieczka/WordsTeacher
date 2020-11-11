@@ -18,6 +18,6 @@ namespace WordsTeacher.Models.Tests
         public string TranslationLanguageName { get; set; }
 
         [Display(Name = "Correct Answers")]
-        public int CorrectAnswers { get; set; }
+        public string CorrectAnswers { get; set; }
     }
 }
