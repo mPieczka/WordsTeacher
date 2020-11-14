@@ -5,107 +5,74 @@
 <form asp-action="CompleteTest">
     @Html.HiddenFor(a => a.Id)
     <div class="row">
-        <div class="col-md-4 col-sm-12">
-            @foreach (var item in Model.Phrases.Take((int)Math.Ceiling(Model.Phrases.Count / 3.0d)))
+        @{
+            var start = 0;
+            var take = (int)Math.Ceiling(Model.Phrases.Count / 3.0d);
+            for (int i = 0; i < 3; i++)
             {
-                <div name="test-phrase">
-                    <div class="form-group d-none test-answer">
-                        <label for="inputPassword" class="col-2 col-form-label">@item.TranslatedPhrase</label>
-                        <div class="col-8 offset-2 row fs-24">
-                            <div class="col-md-6 center d-flex">
-                                <span class="index-card-correct m-auto">
-                                    <i class="fas fa-check"></i>
-                                </span>
+
+                <div class="col-md-4 col-sm-12">
+                    @foreach (var item in Model.Phrases.Skip(start).Take(take))
+                    {
+                        <div name="test-phrase">
+                            <div class="form-group d-none test-answer">
+                                <label for="inputPassword" class="col-2 col-form-label">@item.TranslatedPhrase</label>
+                                <div class="col-8 offset-2 row fs-24">
+                                    <div class="col-md-6 center d-flex">
+                                        <span class="index-card-correct m-auto">
+                                            <i class="fas fa-check"></i>
+                                        </span>
+                                    </div>
+                                    <div class="col-md-6 center d-flex">
+                                        <span class="index-card-incorrect m-auto">
+                                            <i class="fas fa-times"></i>
+                                        </span>
+                                    </div>
+                                </div>
                             </div>
-                            <div class="col-md-6 center d-flex">
-                                <span class="index-card-incorrect m-auto">
-                                    <i class="fas fa-times"></i>
-                                </span>
+                            <div class="form-group d-flex">
+                                <label for="inputPassword" class="col-2 col-form-label">@item.BasePhrase</label>
+                                <div class="col-8 offset-2">
+                                    <input name="Phrases[@(index)].TranslatedPhrase" class="form-control" autocomplete="off">
+                                    <input name="Phrases[@(index++)].Id" value="@item.Id" hidden>
+                                </div>
                             </div>
                         </div>
-                    </div>
-                    <div class="form-group d-flex">
-                        <label for="inputPassword" class="col-2 col-form-label">@item.BasePhrase</label>
-                        <div class="col-8 offset-2">
-                            <input name="Phrases[@(index)].TranslatedPhrase" class="form-control" autocomplete="off">
-                            <input name="Phrases[@(index++)].Id" value="@item.Id" hidden>
-                        </div>
-                    </div>
+                    }
                 </div>
+                start += take;
             }
-        </div>
-        <div class="col-md-4 col-sm-12">
-            @foreach (var item in Model.Phrases.Skip((int)Math.Ceiling(Model.Phrases.Count / 3.0d)).Take((int)Math.Ceiling(Model.Phrases.Count / 3.0d)))
-            {
-                <div name="test-phrase">
-                    <div class="form-group d-none test-answer">
-                        <label for="inputPassword" class="col-2 col-form-label">@item.TranslatedPhrase</label>
-                        <div class="col-8 offset-2 row fs-24">
-                            <div class="col-md-6 center d-flex">
-                                <span class="index-card-correct m-auto">
-                                    <i class="fas fa-check"></i>
-                                </span>
-                            </div>
-                            <div class="col-md-6 center d-flex">
-                                <span class="index-card-incorrect m-auto">
-                                    <i class="fas fa-times"></i>
-                                </span>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="form-group d-flex">
-                        <label for="inputPassword" class="col-2 col-form-label">@item.BasePhrase</label>
-                        <div class="col-8 offset-2">
-                            <input name="Phrases[@(index)].TranslatedPhrase" class="form-control" autocomplete="off">
-                            <input name="Phrases[@(index++)].Id" value="@item.Id" hidden>
-                        </div>
-                    </div>
-                </div>
-            }
-        </div>
-        <div class="col-md-4 col-sm-12">
-            @foreach (var item in Model.Phrases.Skip((int)Math.Ceiling((Model.Phrases.Count * 2) / 3.0d)))
-            {
-                <div name="test-phrase">
-                    <div class="form-group d-none test-answer">
-                        <label for="inputPassword" class="col-2 col-form-label">@item.TranslatedPhrase</label>
-                        <div class="col-8 offset-2 row fs-24">
-                            <div class="col-md-6 center d-flex">
-                                <span class="index-card-correct m-auto">
-                                    <i class="fas fa-check"></i>
-                                </span>
-                            </div>
-                            <div class="col-md-6 center d-flex">
-                                <span class="index-card-incorrect m-auto">
-                                    <i class="fas fa-times"></i>
-                                </span>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="form-group d-flex">
-                        <label for="inputPassword" class="col-2 col-form-label">@item.BasePhrase</label>
-                        <div class="col-8 col- offset-2">
-                            <input name="Phrases[@(index)].TranslatedPhrase" class="form-control" autocomplete="off">
-                            <input name="Phrases[@(index++)].Id" value="@item.Id" hidden>
-                        </div>
-                    </div>
-                </div>
-            }
-        </div>
+        }
     </div>
     <input type="submit" value="Check" id="test-submit" />
 </form>
 <script>
     $(() => {
         $(".index-card-correct").click((e) => {
-            $(e.target).closest('[name="test-phrase"]').find('input.form-control').addClass("success");
-            $(e.target).closest('[name="test-phrase"]').find('input.form-control').removeClass("failure");
+            SetPhraseAsCorrectByButton(e.target);
         })
         $(".index-card-incorrect").click((e) => {
-            $(e.target).closest('[name="test-phrase"]').find('input.form-control').removeClass("success");
-            $(e.target).closest('[name="test-phrase"]').find('input.form-control').addClass("failure");
-
+            SetPhraseAsIncorrectByButton(e.target);
         })
+
+        function SetPhraseAsCorrectByButton(buttonObject) {
+            SetPhraseAsCorrect($(buttonObject).closest('[name="test-phrase"]').find('input.form-control'))
+        }
+
+        function SetPhraseAsIncorrectByButton(buttonObject) {
+            SetPhraseAsIncorrect($(buttonObject).closest('[name="test-phrase"]').find('input.form-control'))
+        }
+
+        function SetPhraseAsCorrect(inputElement) {
+            $(inputElement).addClass("success");
+            $(inputElement).removeClass("failure");
+        }
+
+        function SetPhraseAsIncorrect(inputElement) {
+            $(inputElement).removeClass("success");
+            $(inputElement).addClass("failure");
+        }
+
         $("#test-submit").click((e) => {
             e.preventDefault();
             var obj = $($(".test-answer")[0]);
@@ -125,6 +92,12 @@
             }
             else if (obj && obj.hasClass("d-none")) {
                 $(".test-answer").addClass("d-flex");
+                $('[name="test-phrase"]').each((index, element) => {
+                    let correctAnswer = $(element).find(".test-answer label").html();
+                    let answerElement = $(element).find("input.form-control");
+                    if (correctAnswer == answerElement.val())
+                        SetPhraseAsCorrect(answerElement);
+                })
             }
         })
     })
