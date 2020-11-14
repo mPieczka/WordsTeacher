@@ -114,7 +114,7 @@
                     url: $(e.target).closest("form").attr("action"),
                     data: {
                         id: $("#Id").val(),
-                        correctAnswers: $("input.success").length
+                        correctAnswersPhrasesId: Array.from($("input.success").siblings("input").map((index, obj) => $(obj).val()))
                     },
                     method: "POST",
                     success: (response) => {

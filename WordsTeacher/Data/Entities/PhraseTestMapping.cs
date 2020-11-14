@@ -11,5 +11,6 @@ namespace WordsTeacher.Data.Entities
         public int TestId { get; set; }
         public virtual Phrase Phrase { get; set; }
         public int PhraseId { get; set; }
+        public bool Correct { get; set; }
     }
 }

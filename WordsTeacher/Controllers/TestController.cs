@@ -114,17 +114,23 @@ namespace WordsTeacher.Controllers
             return View(new TestCompleteViewModel
             {
                 Id = id,
-                Phrases = test.Phrases.Select(a => _phraseFactory.PreparePhraseViewModel(a.Phrase, test)).ToList()
+                Phrases = test.Phrases.Where(a => !a.Correct)
+                .Select(a => _phraseFactory.PreparePhraseViewModel(a.Phrase, test)).ToList()
             });
         }
 
-        public IActionResult CompleteTest(int id, int correctAnswers)
+        public IActionResult CompleteTest(int id, int[] correctAnswersPhrasesId)
         {
             var test = _testService.GetById(id);
             if (test == null)
                 return Ok(_ajaxFactory.NotFound());
+            
+            foreach (var phraseId in correctAnswersPhrasesId)
+            {
+                test.Phrases.First(a => a.PhraseId == phraseId).Correct = true;
+            }
 
-            test.CorrectAnswers = correctAnswers;
+            test.CorrectAnswers = correctAnswersPhrasesId.Length;
 
             _testService.Update(test);
 

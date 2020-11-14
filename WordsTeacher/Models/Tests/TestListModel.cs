@@ -19,5 +19,7 @@ namespace WordsTeacher.Models.Tests
 
         [Display(Name = "Correct Answers")]
         public string CorrectAnswers { get; set; }
+
+        public bool CanTryAgain { get; set; }
     }
 }

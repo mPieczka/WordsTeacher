@@ -24,12 +24,24 @@
     </thead>
 </table>
 <script id="actions-template" type="text/x-handlebars-template">
-    <a class="btn btn-dark" href="@Url.Action("Test","Test")/{{model}}">Start</a>
-    <a class="btn btn-success" href="@Url.Action("Edit","Test")/{{model}}">Edit</a>
-    <button class="btn btn-danger" name="btn-delete" data-id="{{model}}">Delete</button>
+    {{#if model.canTryAgain}}
+    <a class="btn btn-dark" href="@Url.Action("Test","Test")/{{model.id}}">
+        {{#if (isPositive model.correctAnswers)}}
+        Try again
+        {{else}}
+        Start
+        {{/if}}
+    </a>
+    {{/if}}
+    <a class="btn btn-success" href="@Url.Action("Edit","Test")/{{model.id}}">Edit</a>
+    <button class="btn btn-danger" name="btn-delete" data-id="{{model.id}}">Delete</button>
 </script>
 <script>
     $(() => {
+        Handlebars.registerHelper('isPositive', function (value) {
+            return value[0] != '0';
+        });
+
         var testTable = $('#test-table').DataTable({
             "serverSide": true,
             "searching": false,
@@ -63,7 +75,7 @@
                     "data": "id",
                     "render": function (data, type, row, meta) {
                         var template = Handlebars.compile($("#actions-template").html());
-                        return template({ model: data, });
+                        return template({ model: row });
                 }}
             ]
         });
