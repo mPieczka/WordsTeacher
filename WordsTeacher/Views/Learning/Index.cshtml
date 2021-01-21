@@ -8,6 +8,9 @@
             <span class="index-card-correct clickable-icon">
                 <i class="fas fa-check"></i>
             </span>
+            <span id="words-left" class="">
+
+            </span>
             <span class="index-card-incorrect clickable-icon">
                 <i class="fas fa-times"></i>
             </span>
@@ -134,6 +137,7 @@
         else {
             currentPhraseId = phraseIds[0];
         }
+        $("#words-left").html(phraseIds.length);
     }
 
     function shuffleArray(array) {

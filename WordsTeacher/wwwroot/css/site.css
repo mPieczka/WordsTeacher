@@ -82,6 +82,10 @@ body {
     align-items: center;
 }
 
+.index-card .card-header span{
+    font-size: 20px;
+}
+
 .index-card .card-body {
     display: none;
 }
